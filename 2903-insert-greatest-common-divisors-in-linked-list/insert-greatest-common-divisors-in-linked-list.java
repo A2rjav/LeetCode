@@ -10,21 +10,7 @@
  */
 class Solution {
     public int gcd(int a,int b){
-        int ans = 1;
-        if(a>=b){
-            for(int i=1;i<=a;i++){
-                if(a%i == 0 && b%i == 0){
-                    ans =i;
-                }
-            }
-        }else{
-            for(int i=1;i<=b;i++){
-                if(a%i == 0 && b%i == 0){
-                    ans =i;
-                }
-            }
-        }
-        return ans;
+        if(b==0){return a;}return gcd(b,a%b);
     }
     public ListNode insertGreatestCommonDivisors(ListNode head) {
         ListNode temp = head;
