@@ -5,9 +5,7 @@ class Solution {
         for(char ch: s.toCharArray()){
             if(ch == '('){
                 c++;
-                if(maxC < c){
-                    maxC = c;
-                }
+                maxC = Math.max(c,maxC);
             }else if(ch == ')'){
                 c--;
             }
