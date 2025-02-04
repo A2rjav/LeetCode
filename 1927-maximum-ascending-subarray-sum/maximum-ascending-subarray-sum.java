@@ -1,14 +1,15 @@
 class Solution {
     public int maxAscendingSum(int[] nums) {
-        ArrayList<Integer> list = new ArrayList<>();
-        list.add(nums[0]);
+        int sum =nums[0];
+        int maxSum = sum;
         for(int i=1;i<nums.length;i++){
             if(nums[i] > nums[i-1]){
-                list.add(list.get(i-1)+nums[i]);
+                sum += nums[i];
+                maxSum = Math.max(sum,maxSum);
             }else{
-                list.add(nums[i]);
+                sum = nums[i];
             }
         }
-        return Collections.max(list);
+        return maxSum;
     }
 }
