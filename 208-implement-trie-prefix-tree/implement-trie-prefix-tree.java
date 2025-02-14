@@ -3,47 +3,45 @@ class Trie {
     class Node{
         Node [] nodes;
         boolean isEnd;
-
-        Node(){
-            nodes = new Node[26]; 
+        public Node(){
+            nodes = new Node[26];
         }
     }
     public Trie() {
-       root = new Node();
+        root = new Node();
     }
     
     public void insert(String word) {
         Node curr = root;
-        for(int level=0;level<word.length();level++){
-            int idx = word.charAt(level)-'a';
-            if(curr.nodes[idx] == null){
-                curr.nodes[idx] = new Node();
-            }
+
+        for(int i=0;i<word.length();i++){
+            int idx = word.charAt(i) - 'a';
+
+            if(curr.nodes[idx] == null) curr.nodes[idx] = new Node();
             curr = curr.nodes[idx];
         }
         curr.isEnd = true;
     }
     
-    public boolean search(String key) {
+    public boolean search(String word) {
         Node curr = root;
-        for(int level =0;level<key.length();level++){
-            int idx = key.charAt(level) - 'a';
-            if(curr.nodes[idx] == null){
-                return false;
-            }
+        for(int i=0;i<word.length();i++){
+            int idx = word.charAt(i)-'a';
+            if(curr.nodes[idx] == null) return false;
             curr = curr.nodes[idx];
         }
-        return curr.isEnd == true;
+        return curr.isEnd;
+
     }
     
     public boolean startsWith(String prefix) {
         Node curr = root;
         for(int i=0;i<prefix.length();i++){
-            int idx = prefix.charAt(i)-'a';
-            if(curr.nodes[idx] == null)  {
-                return false;
-            }
-            curr= curr.nodes[idx];
+            int idx = prefix.charAt(i) - 'a';
+
+            if(curr.nodes[idx] == null) return false;
+
+            curr = curr.nodes[idx];
         }
         return true;
     }
