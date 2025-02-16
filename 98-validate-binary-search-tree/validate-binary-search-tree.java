@@ -1,34 +1,12 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
+// gpt solution
 class Solution {
-    List<Integer> list;
     public boolean isValidBST(TreeNode root) {
-        list = new ArrayList<>();
-        bfs(root);
-        for(int i=1;i<list.size();i++){
-            if(list.get(i) <= list.get(i-1)){
-                return false;
-            }
-        }
-        return true;
+        return isValid(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
-    public void bfs(TreeNode root){
-        if(root == null) return;
-        bfs(root.left);
-        list.add(root.val);
-        bfs(root.right);
+
+    private boolean isValid(TreeNode node, long min, long max) {
+        if (node == null) return true;
+        if (node.val <= min || node.val >= max) return false;
+        return isValid(node.left, min, node.val) && isValid(node.right, node.val, max);
     }
 }
