@@ -6,7 +6,7 @@ class Solution {
         c = image[0].length;
         originalColor = image[sr][sc];
 
-        if (originalColor != color) { // Prevent infinite recursion if color is same
+        if (originalColor != color) {
             dfs(image, sr, sc, color);
         }
 
@@ -14,18 +14,15 @@ class Solution {
     }
 
     public void dfs(int[][] image, int sr, int sc, int color) {
-        // Base Case: Out of bounds or already a different color
-        if (sr < 0 || sr >= r || sc < 0 || sc >= c || image[sr][sc] != originalColor) {
-            return;
-        }
-
-        // Fill the cell
         image[sr][sc] = color;
+        int [][] directions = {{1,0},{-1,0},{0,1},{0,-1,}};
+        for( int[] dir : directions){
+            int newRow = dir[0]+ sr;
+            int newCol = dir[1] + sc;
 
-        // Explore all four directions
-        dfs(image, sr + 1, sc, color);
-        dfs(image, sr - 1, sc, color);
-        dfs(image, sr, sc + 1, color);
-        dfs(image, sr, sc - 1, color);
+            if(newRow >=0 && newRow <r && newCol >=0 && newCol <c && image[newRow][newCol] == originalColor){
+                dfs(image,newRow,newCol,color);
+            }
+        }
     }
 }
