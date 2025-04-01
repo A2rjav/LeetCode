@@ -1,14 +1,22 @@
 class Solution {
+    int n;
+    List<List<Integer>> ans;
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> ans = new ArrayList<>();
-        int n = nums.length;
-        for(int i=0;i<1<<n;i++){
-            List<Integer> list = new ArrayList<>();
-            for(int j=0;j<n;j++){
-                if(((1<<j)&i)!= 0) list.add(nums[j]);
-            }
-            ans.add(list);
-        }
+        n = nums.length;
+        ans = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        recurse(nums,list,0);
         return ans;
+    }
+    public void recurse(int[] nums,List<Integer> list, int i){
+        if(i == n) {
+            ans.add(new ArrayList<>(list));
+            return;
+        }
+
+        list.add(nums[i]);
+        recurse(nums,list,i+1);
+        list.remove(list.size()-1);
+        recurse(nums,list,i+1);
     }
 }
