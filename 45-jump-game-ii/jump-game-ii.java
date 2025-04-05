@@ -1,21 +1,26 @@
 class Solution {
+    int n;
+    int [] dp;
     public int jump(int[] nums) {
-        int n = nums.length;
-        if (n <= 1) return 0;
-        int currMax =0;
-        int maxI=0;
-        int c=0;
+        n = nums.length;
+        dp = new int[n];
 
-        for(int i=0;i<n;i++){
-            maxI = Math.max(maxI,i+nums[i]);
+        if(n<=1) return 0;
+        Arrays.fill(dp,-1);
+        return recurJump(nums,0);
+    }
+    public int recurJump(int[] nums,int i){
+        if(i>= n-1) return 0;
 
-            if(i==currMax){
-                c++;
-                currMax = maxI;
-            }
-            if(currMax >=n-1) break;
+        if(dp[i] != -1 ) return dp[i];
+
+        int minJumps = Integer.MAX_VALUE;
+        for(int j=1;j<= nums[i] && i+j<n;j++){
+            int jumpsFromNext = recurJump(nums,i+j);
+            if(jumpsFromNext != Integer.MAX_VALUE)
+            minJumps = Math.min(minJumps,1+jumpsFromNext);
         }
-        return c;
-        
+        return  dp[i] = minJumps;
+
     }
 }
