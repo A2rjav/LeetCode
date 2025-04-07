@@ -1,15 +1,15 @@
 class Solution {
     int n;
-    Integer dp[];
+    Integer[] dp;
     public int rob(int[] nums) {
         n = nums.length;
         dp = new Integer[n];
-        return robRecurse(nums,0);
+        return recurse(nums,0);
     }
-    public int robRecurse(int []nums,int i){
-        if(i>= n) return 0;
+    public int recurse(int []nums,int i){
+        if(i>=n) return 0;
+        if(dp[i] != null) return dp[i];
 
-        if(dp[i] != null ) return dp[i];
-        return dp[i] = Math.max(robRecurse(nums,i+2) + nums[i],robRecurse(nums,i+1));
+        return dp[i] = Math.max(recurse(nums,i+2) + nums[i], recurse(nums,i+1));
     }
 }
