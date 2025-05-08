@@ -1,24 +1,29 @@
 class Solution {
     public int[] asteroidCollision(int[] asteroids) {
-        Deque<Integer> dq = new LinkedList<>();
-        for(int n: asteroids){
-            if(n>0){
-                dq.addLast(n);
-            }else{
-                while(!dq.isEmpty() && dq.peekLast() > 0 && dq.peekLast() < Math.abs(n) ){
-                    dq.removeLast();
-                }
-                if(dq.isEmpty() || dq.peekLast() < 0){
-                    dq.addLast(n);
-                }else if (dq.peekLast() == Math.abs(n)){
-                    dq.removeLast();
+        Stack<Integer> st = new Stack<>();
+        for(int a : asteroids){
+            boolean destroyed = false;
+            while(!st.isEmpty() && a<0 && st.peek() > 0){
+                int top = st.peek();
+
+                if(top < -a) st.pop();
+                else if(top == -a){
+                    destroyed = true;
+                    st.pop();
+                    break;
+                }else{
+                    destroyed = true;
+                    break;
                 }
             }
+            if(!destroyed)
+            st.push(a);
         }
-        int [] result = new int[dq.size()];
-        for(int i=0;i<result.length;i++){
-            result[i]= dq.pollFirst();
+        int n = st.size();
+        int ans[] = new int[n];
+        for(int i=n-1;i>=0;i--){
+            ans[i] = st.pop();
         }
-        return result;
+        return ans;
     }
 }
