@@ -1,26 +1,16 @@
 class Solution {
-    int n;
-    int [] dp;
     public int jump(int[] nums) {
-        n = nums.length;
-        dp = new int[n];
-
-        if(n<=1) return 0;
-        Arrays.fill(dp,-1);
-        return recurJump(nums,0);
-    }
-    public int recurJump(int[] nums,int i){
-        if(i>= n-1) return 0;
-
-        if(dp[i] != -1 ) return dp[i];
-
-        int minJumps = Integer.MAX_VALUE;
-        for(int j=1;j<= nums[i] && i+j<n;j++){
-            int jumpsFromNext = recurJump(nums,i+j);
-            if(jumpsFromNext != Integer.MAX_VALUE)
-            minJumps = Math.min(minJumps,1+jumpsFromNext);
+        int jumps = 0;
+        int l=0,r=0,n= nums.length;
+        while(r< n-1){
+            int farthest = 0;
+            for(int i=l;i<= r;i++){
+                farthest = Math.max(farthest,i + nums[i]);
+            }
+            l=r+1;
+            r = farthest;
+            jumps++;
         }
-        return  dp[i] = minJumps;
-
+        return jumps;
     }
 }
