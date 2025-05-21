@@ -14,47 +14,23 @@
  * }
  */
 class Solution {
-    ArrayList<TreeNode> list = new ArrayList<>();
-    public void inorder(TreeNode root){
-        if(root == null ) return;
-        inorder(root.left);
-        list.add(root);
-        inorder(root.right);
-    }
-    public void print(){
-        for(TreeNode node : list){
-            System.out.println(node.val);
-        }
-        
-    }
-    public void find(){
-        TreeNode a=null,b=null;
-        boolean flag = false;
-        ArrayList<TreeNode> copy = new ArrayList<>();
-        for(int i=0;i<list.size();i++){
-            copy.add(list.get(i));
-        }
-        Collections.sort(copy, (x, y) -> Integer.compare(x.val, y.val));
-
-        for(int i=0;i<list.size();i++){
-            if(list.get(i).val != copy.get(i).val && !flag){
-                a = list.get(i);
-                flag = true;
-            }
-            else if((list.get(i).val != copy.get(i).val) && flag){
-                b = list.get(i);
-            }
-        }
-        
-        int value = a.val;
-        a.val = b.val;
-        b.val = value;
-        
-
-    }
+    TreeNode first = null,second = null;
+    TreeNode prev = new TreeNode(Integer.MIN_VALUE);
     public void recoverTree(TreeNode root) {
         inorder(root);
-        print();
-        find();
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
     }
+
+    public void inorder(TreeNode root){
+        if(root == null ) return;
+
+        inorder(root.left);
+        if(first == null && prev.val > root.val) first = prev;
+        if(first != null && prev.val > root.val) second = root;
+        prev = root;
+        inorder(root.right);
+    }
+    
 }
