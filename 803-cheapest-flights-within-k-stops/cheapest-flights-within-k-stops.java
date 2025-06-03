@@ -3,43 +3,49 @@ class Solution {
         int n,wt;
         Pair(int n,int wt){
             this.n = n;
-            this.wt =wt;
+            this.wt = wt;
         }
     }
     class Info{
-        int n,wt,stop;
-        Info(int n,int wt, int stop){
+        int n,wt,stops;
+        Info(int n,int wt, int stops){
             this.n = n;
             this.wt = wt;
-            this.stop = stop;
+            this.stops = stops;
         }
     }
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        List<List<Pair>> adj = new ArrayList<>();
+        ArrayList<ArrayList<Pair>> adj = new ArrayList<>();
         for(int i=0;i<n;i++) adj.add(new ArrayList<>());
 
         for(int flight[] : flights){
-            adj.get(flight[0]).add(new Pair(flight[1],flight[2]));
-        }
+            int u = flight[0];
+            int v = flight[1];
+            int cost = flight[2];
 
-        int dist[] = new int [n];
+            adj.get(u).add(new Pair(v,cost));
+        }
+        int dist[] = new int[n];
         Arrays.fill(dist,Integer.MAX_VALUE);
         dist[src] = 0;
 
         Queue<Info> q = new LinkedList<>();
         q.add(new Info(src,0,0));
 
+        int stop = 0;
         while(!q.isEmpty()){
-            Info curr = q.remove();
+            Info curr = q.poll();
+            int node = curr.n;
+            int wt = curr.wt;
+            int stops = curr.stops;
 
-            for(Pair neighbor : adj.get(curr.n)){
-                if(dist[neighbor.n] > curr.wt + neighbor.wt && curr.stop <= k){    
-                    dist[neighbor.n] = curr.wt + neighbor.wt;
-                    q.add(new Info(neighbor.n,curr.wt + neighbor.wt,curr.stop +1));
+            for(Pair neighbor : adj.get(node)){
+                if(dist[neighbor.n] > neighbor.wt + wt && stops <=k ){
+                    dist[neighbor.n] = neighbor.wt + wt;
+                    q.add(new Info(neighbor.n,dist[neighbor.n],stops+1));
                 }
             }
         }
-        if(dist[dst] != Integer.MAX_VALUE) return dist[dst];
-        return -1;
+        return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst]; 
     }
 }
