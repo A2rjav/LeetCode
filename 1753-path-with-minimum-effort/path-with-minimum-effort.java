@@ -1,45 +1,40 @@
 class Solution {
-    class Info{
-        int r,c,effort;
-        Info(int r,int c,int effort){
-            this.r = r;
-            this.c = c;
-            this.effort = effort;
+    class Pair{
+        int x,y,diff;
+        Pair(int x,int y,int diff){
+            this.x = x;
+            this.y = y;
+            this.diff = diff;
         }
     }
     public int minimumEffortPath(int[][] heights) {
-        PriorityQueue<Info> pq = new PriorityQueue<>((a,b) -> a.effort - b.effort);
-        int r = heights.length;
-        int c = heights[0].length;
-        int [][] effort = new int[r][c];
-
-        for(int i=0;i<r;i++){
-            for(int j=0;j<c;j++){
-                effort[i][j] = Integer.MAX_VALUE;
-            }
+        PriorityQueue<Pair> q =new PriorityQueue<>((a,b) -> a.diff - b.diff);
+        q.add(new Pair(0,0,0));
+    
+        int n = heights.length;
+        int m = heights[0].length;
+        int[][] util = new int[n][m];
+        
+        for(int i = 0; i < n; i++) {
+            Arrays.fill(util[i], Integer.MAX_VALUE);
         }
-        effort[0][0] = 0;   
+        util[0][0] = 0;
 
-        pq.add(new Info(0,0,0));
-
-        int dirs[][] = {{1,0},{-1,0},{0,1},{0,-1}};
-
-        while(!pq.isEmpty()){
-            Info curr = pq.remove();
-            int row = curr.r;
-            int col = curr.c;
-            int diff = curr.effort;
-
-            if(row == r-1 && col == c-1) return diff;
-            for(int [] dir : dirs){
-                int newRow = row + dir[0];
-                int newCol = col + dir[1];
-
-                if(newRow>=0 && newCol >=0 && newRow <r && newCol<c){
-                    int newEffort = Math.max(Math.abs(heights[newRow][newCol] - heights[row][col]),diff);
-                    if(newEffort < effort[newRow][newCol]){
-                        effort[newRow][newCol] = newEffort;
-                        pq.add(new Info(newRow,newCol,newEffort));
+        while(!q.isEmpty()){
+            Pair curr= q.poll();
+            int x = curr.x;
+            int y = curr.y;
+            int diff = curr.diff;
+            if(x == n-1 && y == m-1) return diff;
+            int dirs[][] = {{-1,0},{1,0},{0,1},{0,-1}};
+            for(int dir[] : dirs){
+                int newX = dir[0]+x;
+                int newY = dir[1] +y;
+                if(newX >=0 && newY >=0 && newX <n && newY<m){
+                    int newDiff = Math.max(diff,Math.abs(heights[newX][newY] - heights[x][y]));
+                    if(newDiff < util[newX][newY]){
+                        util[newX][newY] = newDiff;
+                        q.add(new Pair(newX,newY,newDiff));
                     }
                     
                 }
