@@ -1,22 +1,21 @@
 class Solution {
-    int n;
     Integer dp[];
     public int numSquares(int n) {
-        this.n =n;
         dp = new Integer[n+1];
-        return countRecur(n);
-        
+        return cntSquares(n);
     }
-    public int countRecur(int x){
-        if(x==0) return 0;
-        if(x<0) return Integer.MAX_VALUE;
+    public int cntSquares(int n){
+        if(n==0) return 0;
 
-        if(dp[x] != null) return dp[x];
+        if(dp[n] != null) return dp[n];
+        int minCnt = Integer.MAX_VALUE;
 
-        int count =Integer.MAX_VALUE;
-        for(int i=1; i*i<=x;i++){
-            count = Math.min(count,countRecur(x-i*i)+1);
+        for(int i=1;i*i<= n;i++){
+            int square = i*i;
+            minCnt = Math.min(minCnt,1+cntSquares(n-square));
         }
-        return dp[x] = count;
+        return dp[n] = minCnt;
     }
+
+
 }
