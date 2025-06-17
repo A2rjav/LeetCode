@@ -16,8 +16,7 @@ class Solution {
         }else{
             int a=solve(s,i+1,j);
             int b = solve(s,i,j-1);
-            int c = solve(s,i+1,j-1);
-            return dp[i][j] = Math.max(Math.max(a,b),c);
+            return dp[i][j] = Math.max(a,b);
         }
     }
 }
