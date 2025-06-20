@@ -1,23 +1,30 @@
 class Solution {
+    Integer [][]dp;
     int n;
-    Integer dp[][];
     public int maxProfit(int[] prices) {
         n = prices.length;
         dp = new Integer[n+1][2];
-        return solve(prices,0,true);
+
+        return solve(prices,0,1);
     }
-    public int solve(int []prices,int ind,boolean buy){
+    public int solve(int []prices,int ind,int buy){
+
         if(ind == n) return 0;
-        int profit = 0;
 
-        if(dp[ind][buy ? 1:0] != null ) return dp[ind][buy ? 1:0];
+        if(dp[ind][buy] != null ) return dp[ind][buy];
+        
+        if(buy == 1 ){
 
-        if(buy){
-            profit = Math.max((solve(prices,ind+1,false) - prices[ind]), 0 + solve(prices,ind+1,true));
-        }else{
-            profit = Math.max(prices[ind] + solve(prices,ind+1,true), solve(prices,ind+1,false));
+            int purchase = -prices[ind] + solve(prices,ind+1,0);
+            int notPurchase = solve(prices,ind+1,1);
+
+            return dp[ind][buy] = Math.max(purchase,notPurchase);
         }
-        dp[ind][buy?1:0] = profit;
-        return profit;
+        else{
+            int sell = prices[ind] + solve(prices,ind+1,1);
+            int notSell = solve(prices,ind+1,0);
+
+            return dp[ind][buy] = Math.max(sell,notSell);
+        }
     }
 }
