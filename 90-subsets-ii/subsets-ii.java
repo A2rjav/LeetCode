@@ -1,28 +1,24 @@
-import java.util.*;
-
 class Solution {
-    private List<List<Integer>> ans;
-    private Set<String> set;
-
-    public void subset(int[] nums, int idx, List<Integer> list) {
-        if (idx == nums.length) {
-            List<Integer> tempList = new ArrayList<>(list);
-            Collections.sort(tempList); // Ensure the list is sorted
-            if (set.add(tempList.toString())) {
-                ans.add(tempList);
-            }
+    Set<List<Integer>> ans = new HashSet<>();
+    int n;
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        n = nums.length;
+        backtrack(nums,0,new ArrayList<>());
+        System.out.println(ans);
+        List<List<Integer>> res = new ArrayList<>();
+        for(List<Integer> curr : ans) res.add(new ArrayList<>(curr));
+        return res;
+    }
+    public void backtrack(int []nums,int i,ArrayList<Integer> list){
+        if(i==n){
+            ans.add(new ArrayList<>(list));
             return;
         }
-        list.add(nums[idx]);
-        subset(nums, idx + 1, list);
-        list.remove(list.size() - 1);
-        subset(nums, idx + 1, list);
-    }
 
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
-        ans = new ArrayList<>();
-        set = new HashSet<>();
-        subset(nums, 0, new ArrayList<>());
-        return ans;
+        backtrack(nums,i+1,list);
+        list.add(nums[i]);
+        backtrack(nums,i+1,list);
+        list.remove(list.size()-1);
     }
 }
