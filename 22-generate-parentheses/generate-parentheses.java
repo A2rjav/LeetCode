@@ -1,20 +1,27 @@
 class Solution {
+    List<String> ans = new ArrayList<>();
     public List<String> generateParenthesis(int n) {
-        List<String> res = new ArrayList<>();
-        recurse(res,0,0,"",n);
-        return res;
+        backtrack(n,new StringBuilder(),0,0);
+        return ans;
     }
-    public void recurse(List<String> res,int left,int right,String s,int n){
-        if(s.length() == n*2){
-            res.add(s);
+    public void backtrack(int n,StringBuilder sb,int l,int r){
+        if(sb.length() == 2*n){
+            ans.add(sb.toString());
             return;
         }
 
-        if(left<n){
-            recurse(res,left+1,right,s+"(",n);
+        if(l<n){
+            sb.append('(');
+            backtrack(n,sb,l+1,r);
+            sb.deleteCharAt(sb.length()-1);
         }
-        if(right<left){
-            recurse(res,left,right+1,s+")",n);
+        if(r<l){
+            sb.append(')');
+            backtrack(n,sb,l,r+1);
+            sb.deleteCharAt(sb.length()-1);
+
         }
+
+
     }
 }
