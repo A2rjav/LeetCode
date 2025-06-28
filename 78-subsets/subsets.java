@@ -6,15 +6,12 @@ class Solution {
         backtrack(nums,0,new ArrayList<>());
         return ans;       
     }
-    public void backtrack(int []nums,int i,List<Integer> list){
-        if(i==n) {
-            ans.add(new ArrayList<>(list));
-            return;
+    public void backtrack(int []nums,int start,List<Integer> list){
+        ans.add(new ArrayList<>(list));
+        for(int i=start;i<n;i++){
+            list.add(nums[i]);
+            backtrack(nums,i+1,list);
+            list.remove(list.size()-1);
         }
-
-        list.add(nums[i]);
-        backtrack(nums,i+1,list);
-        list.remove(list.size()-1);
-        backtrack(nums,i+1,list);
     }
 }
