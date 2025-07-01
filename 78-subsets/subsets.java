@@ -1,17 +1,20 @@
-class Solution {
-    List<List<Integer>> ans= new ArrayList<>();
-    int n;
+class Solution { 
+        List<List<Integer>> out = new ArrayList<>();
+
     public List<List<Integer>> subsets(int[] nums) {
-        n = nums.length;
-        backtrack(nums,0,new ArrayList<>());
-        return ans;       
-    }
-    public void backtrack(int []nums,int start,List<Integer> list){
-        ans.add(new ArrayList<>(list));
-        for(int i=start;i<n;i++){
-            list.add(nums[i]);
-            backtrack(nums,i+1,list);
-            list.remove(list.size()-1);
+        int n = nums.length;
+        for(int i=0;i<Math.pow(2,n);i++){
+            out.add(getNum(i, nums, n));
         }
+        return out;
+    }
+
+    public List<Integer> getNum(int x, int num[], int n) {
+        List<Integer> s = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            if((x & 1 << i) != 0)
+                s.add(num[i]);
+        }
+        return s;
     }
 }
