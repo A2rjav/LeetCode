@@ -1,32 +1,25 @@
 class Solution {
-    public String helper(String str){
-        int [] freq = new int[26];
-        for(char ch : str.toCharArray()){
-            freq[ch-'a']++;
-        }
-        StringBuilder sb = new StringBuilder();
-        for(int i=0;i<freq.length;i++){
-            sb.append("" + freq[i]);
-            sb.append('#');
-        }
-        return sb.toString();
-    }
     public List<List<String>> groupAnagrams(String[] strs) {
-        TreeMap<String,List<String>> map = new TreeMap<>();
-        for(String str : strs){
-            String hash = helper(str);
-            System.out.println(hash);
-            if(!map.containsKey(hash)){
-                map.put(hash,new ArrayList<>());
-            }
-            map.get(hash).add(str);
-        } 
-        List<List<String>> ans = new ArrayList<>();
-        for(List<String> list:map.values()){
-        Collections.sort(list);
+        HashMap<String,ArrayList<String>> map = new HashMap<>();
 
-            ans.add(list);
+        for(String str : strs){
+            char[] charArray = str.toCharArray();
+            Arrays.sort(charArray);
+            String temp = new String(charArray);
+
+            if(map.containsKey(temp)){
+                map.get(temp).add(str);
+            }else{
+                map.put(temp,new ArrayList<>());
+                map.get(temp).add(str);
+            }
         }
+
+        List<List<String>> ans = new ArrayList<>();
+        for(Map.Entry<String,ArrayList<String>> entry : map.entrySet()){
+            // String str = entry.value();
+            ans.add(entry.getValue());
+        } 
         return ans;
     }
 }
