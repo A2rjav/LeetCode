@@ -14,22 +14,20 @@
  * }
  */
 class BSTIterator {
-    Queue<TreeNode> q;
+    Queue<TreeNode> q = new LinkedList<>();
     public BSTIterator(TreeNode root) {
-        q = new LinkedList<>();
         inorder(root);
     }
     
     public int next() {
-        TreeNode node = q.remove();
-        return node.val;
+        return q.poll().val;
     }
     
     public boolean hasNext() {
         return !q.isEmpty();
     }
     public void inorder(TreeNode root){
-        if(root == null ) return;
+        if (root==null) return;
         inorder(root.left);
         q.add(root);
         inorder(root.right);
