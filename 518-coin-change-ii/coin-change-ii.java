@@ -1,21 +1,16 @@
 class Solution {
     int n;
-    int amount;
-    Integer [][]dp;
+    Integer dp[][];
     public int change(int amount, int[] coins) {
         n = coins.length;
-        this.amount = amount;
         dp = new Integer[n+1][amount+1];
-        return countCoins(0,coins,0);
+        return recurse(coins,amount,0,0);
     }
-    public int countCoins(int sum,int []coins,int i){
-        if(sum == amount) return 1;
-        if(sum > amount || i == n) return 0;
-        
-        if(dp[i][sum] != null ) return dp[i][sum];
-
-        int pick = countCoins(sum+ coins[i],coins,i);
-        int notPick = countCoins(sum,coins,i+1);
-        return  dp[i][sum] = pick + notPick;
+    public int recurse(int []coins, int amt,int sum,int i){
+        if(sum == amt ) return 1;
+        if(sum > amt) return 0;
+        if(i==n) return 0;
+        if(dp[i][sum ]!= null ) return dp[i][sum];
+        return dp[i][sum] = recurse(coins,amt,sum+coins[i],i) + recurse(coins,amt,sum,i+1);
     }
 }
