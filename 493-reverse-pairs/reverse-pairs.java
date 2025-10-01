@@ -6,41 +6,36 @@ class Solution {
 
     private int mergeSort(int[] nums, int left, int right) {
         if (left >= right) return 0;
-
         int mid = (left + right) >> 1;
-        int cnt = mergeSort(nums, left, mid) + mergeSort(nums, mid + 1, right);
-
-        // Count cross pairs
-        int end = mid + 1;
-        for (int i = left; i <= mid; i++) {
-            while (end <= right && (long) nums[i] > 2L * nums[end]) {
-                end++;
-            }
-            cnt += end - (mid + 1);
-        }
-
-        // Merge step
+        int cnt = 0;
+        cnt += mergeSort(nums, left, mid);
+        cnt += mergeSort(nums, mid + 1, right);
+        cnt += countPairs(nums, left, mid, right);
         merge(nums, left, mid, right);
         return cnt;
     }
 
+    // Count cross-pairs: i in [low..mid], j in [mid+1..high]
+    private int countPairs(int[] nums, int low, int mid, int high) {
+        int j = mid + 1;
+        int cnt = 0;
+        for (int i = low; i <= mid; i++) {
+            while (j <= high && (long) nums[i] > 2L * nums[j]) j++;
+            cnt += j - (mid + 1);
+        }
+        return cnt;
+    }
+
+    // Merge two sorted halves into ascending order
     private void merge(int[] nums, int left, int mid, int right) {
         int[] temp = new int[right - left + 1];
         int i = left, j = mid + 1, k = 0;
-
         while (i <= mid && j <= right) {
-            if (nums[i] <= nums[j]) {
-                temp[k++] = nums[i++];
-            } else {
-                temp[k++] = nums[j++];
-            }
+            if (nums[i] <= nums[j]) temp[k++] = nums[i++];
+            else temp[k++] = nums[j++];
         }
-
         while (i <= mid) temp[k++] = nums[i++];
         while (j <= right) temp[k++] = nums[j++];
-
-        for (int t = 0; t < temp.length; t++) {
-            nums[left + t] = temp[t];
-        }
+        System.arraycopy(temp, 0, nums, left, temp.length);
     }
 }
